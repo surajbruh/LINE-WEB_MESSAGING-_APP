@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { signUpThunk } from "../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { successToast, errorToast } from "../utils/notification";
+import { UserRound, Mail, Key, Eye, EyeClosed } from "lucide-react";
 
 const SignupPage = () => {
     const [username, setUsername] = useState("");
@@ -29,8 +30,8 @@ const SignupPage = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen px-4 bg-gray-100 text-gray-900 dark:bg-[#111b21] dark:text-white">
-            <div className="w-full max-w-md rounded-xl shadow-md p-6 bg-white dark:bg-[#202c33]">
+        <div className="flex items-center justify-center min-h-screen px-4 bg-[var(--color-bg-base)] text-[var(--color-text-primary)]">
+            <div className="w-full max-w-md rounded-xl shadow-md p-6 bg-[var(--color-bg-surface)] text-[var(--color-text-primary)]">
                 {/* Header */}
                 <h1 className="uppercase font-semibold text-3xl text-center mb-6">
                     Signup
@@ -39,8 +40,8 @@ const SignupPage = () => {
                 {/* Form */}
                 <form onSubmit={handleSignUp} className="space-y-4">
                     {/* Username */}
-                    <div className="flex gap-2 items-center px-2 py-1 border rounded-lg focus-within:ring-2 focus-within:ring-green-500 dark:border-gray-600">
-                        <i className="ri-user-line text-xl"></i>
+                    <div className="flex gap-2 items-center px-2 py-1 border border-[var(--color-primary-border)] rounded-lg focus-within:ring-2 focus-within:ring-green-500">
+                        <UserRound className="text-inherit" />
                         <input
                             onChange={(e) => setUsername(e.target.value)}
                             className="w-full outline-none px-2 py-1 bg-transparent placeholder:italic placeholder:uppercase text-sm sm:text-base"
@@ -51,8 +52,8 @@ const SignupPage = () => {
                     </div>
 
                     {/* Email */}
-                    <div className="flex gap-2 items-center px-2 py-1 border rounded-lg focus-within:ring-2 focus-within:ring-green-500 dark:border-gray-600">
-                        <i className="ri-mail-line text-xl"></i>
+                    <div className="flex gap-2 items-center px-2 py-1 border border-[var(--color-primary-border)] rounded-lg focus-within:ring-2 focus-within:ring-green-500">
+                        <Mail className="text-inherit" />
                         <input
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full outline-none px-2 py-1 bg-transparent placeholder:italic placeholder:uppercase text-sm sm:text-base"
@@ -63,8 +64,8 @@ const SignupPage = () => {
                     </div>
 
                     {/* Password */}
-                    <div className="flex gap-2 items-center px-2 py-1 border rounded-lg focus-within:ring-2 focus-within:ring-green-500 dark:border-gray-600">
-                        <i className="ri-key-line text-xl"></i>
+                    <div className="flex gap-2 items-center px-2 py-1 border border-[var(--color-primary-border)] rounded-lg focus-within:ring-2 focus-within:ring-green-500">
+                        <Key className="text-inherit" />
                         <input
                             onChange={(e) => setPassword(e.target.value)}
                             className="w-full outline-none px-2 py-1 bg-transparent placeholder:italic placeholder:uppercase text-sm sm:text-base"
@@ -78,7 +79,7 @@ const SignupPage = () => {
                                 e.preventDefault()
                                 setShowPassword(!showPassword)
                             }}>
-                            {showPassword ? <i className="ri-eye-line"></i> : <i className="ri-eye-close-line"></i>}
+                            {showPassword ? <Eye className="text-inherit" /> : <EyeClosed className="text-inherit" />}
                         </button>
                     </div>
 
@@ -102,7 +103,7 @@ const SignupPage = () => {
                         Login
                     </Link>
                 </p>
-            </div>
+            </div >
         </div >
     );
 };

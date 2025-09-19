@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Menu, X } from "lucide-react" // icons
 import { logoutThunk } from "../features/auth/authSlice"
 import { successToast, errorToast } from "../utils/notification"
+import ThemeToggle from "./ThemeToggle"
 
 
 const Navbar = () => {
@@ -28,7 +29,7 @@ const Navbar = () => {
     }
 
     return (
-        <nav className="px-4 py-2 flex items-center justify-between bg-gray-100 text-gray-900 dark:bg-[#111b21] dark:text-white shadow-md">
+        <nav className="px-4 py-2 flex items-center justify-between bg-[var(--color-bg-surface)] text-[var(--color-text-primary)] shadow-[var(--shadow-sm)] ">
             {/* Logo */}
             <h1 className="uppercase font-bold text-2xl">
                 <Link
@@ -59,6 +60,9 @@ const Navbar = () => {
                 ) : (
                     <>
                         <li>
+                            <ThemeToggle />
+                        </li>
+                        <li>
                             <Link to="/signup">Signup</Link>
                         </li>
                         <li>
@@ -71,15 +75,15 @@ const Navbar = () => {
             {/* Mobile Menu Toggle */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="md:hidden focus:outline-none"
+                className="md:hidden focus:outline-none text-[var(--color-text-primary)] "
             >
-                {isOpen ? <X size={28} /> : <Menu size={28} />}
+                {isOpen ? <X size={28} className="text-inherit" /> : <Menu size={28} className="text-inherit" />}
             </button>
 
             {/* Mobile Menu */}
             {
                 isOpen && (
-                    <div className="absolute top-14 left-0 w-full bg-gray-100 dark:bg-[#111b21] shadow-md z-50 md:hidden">
+                    <div className="absolute top-14 left-0 w-full bg-[var(--color-bg-surface)] text-[var(--color-text-primary)] shadow-[var(--shadow-sm)] z-50 md:hidden">
                         <ul className="flex flex-col items-center gap-4 px-4 py-4 uppercase font-bold text-lg">
                             {authUser ? (
                                 <>
@@ -93,7 +97,7 @@ const Navbar = () => {
                                         <button
                                             disabled={isLoading.logout}
                                             onClick={handleLogout}
-                                            className="transition uppercase font-bold text-lg active:bg-[#263c49] text-center w-full"
+                                            className="transition uppercase font-bold text-lg active:bg-[var(--color-text-muted)] text-center w-full"
                                         >
                                             Logout
                                         </button>

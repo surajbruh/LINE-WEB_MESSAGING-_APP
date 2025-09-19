@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { checkAuthThunk } from "./features/auth/authSlice"
 import { socket } from "./socket"
 import { addMessage } from "./features/chat/chatSlice"
+import TestComponent from "./components/Test"
 
 const App = () => {
 
@@ -37,7 +38,7 @@ const App = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-100 text-gray-900 dark:bg-[#111b21] dark:text-white">
+      <div className="min-h-screen bg-[var(--color-bg-base)] text-[var(--color-text-primary)]  ">
         <ToastContainer
           position="top-right"
           autoClose={3000}
@@ -52,12 +53,12 @@ const App = () => {
         />
         <Navbar />
         < Routes >
-          <Route index element={
+          {/* <Route index element={
             <PrivateRoute>
               <HomePage />
             </PrivateRoute>
             // authUser ? < HomePage /> : <Navigate to="login" />
-          } />
+          } /> */}
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/profile" element={
@@ -65,6 +66,7 @@ const App = () => {
               <ProfilePage />
             </PrivateRoute>
           } />
+          <Route path="/" element={<TestComponent />} />
         </Routes >
       </div>
     </>
