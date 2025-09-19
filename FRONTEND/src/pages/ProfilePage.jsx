@@ -4,6 +4,8 @@ import { errorToast, successToast } from "../utils/notification";
 import { Camera } from "lucide-react";
 import { getProfilePic, updateProfilePic } from "../../api";
 import { useCallback } from "react";
+import ThemeToggle from "../components/ThemeToggle";
+import { useHeightContext } from "../utils/heightContext";
 
 const ProfilePage = () => {
 
@@ -68,9 +70,13 @@ const ProfilePage = () => {
         }
     };
 
+    const navHeight = useHeightContext()
+
     return (
-        <div className="flex items-center justify-center min-h-screen px-4 bg-gray-100 text-gray-900 dark:bg-[#111b21] dark:text-white">
-            <div className="w-full max-w-lg rounded-xl shadow-md p-6 bg-white dark:bg-[#202c33]">
+        <div
+            style={{ minHeight: `calc(100vh - ${navHeight}px)` }}
+            className="flex items-center justify-center min-h-screen px-4 bg-[var(--color-bg-base)] text-[var(--color-text-primary)]">
+            <div className="w-full max-w-lg rounded-xl shadow-md p-6 bg-[var(--color-bg-surface)]">
                 {/* Header */}
                 <h1 className="text-2xl font-bold uppercase text-center mb-6">
                     My Profile

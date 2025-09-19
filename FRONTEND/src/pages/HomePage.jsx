@@ -1,13 +1,16 @@
-import { useSelector } from "react-redux"
 import ChatContainer from "../components/ChatContainer"
 import Sidebar from "../components/Sidebar"
+import { useHeightContext } from "../utils/heightContext"
 
 const HomePage = () => {
-    // TODO: real-time messaging functionationality pull messages from database
+
+    const navHeight = useHeightContext()
 
     return (
         <>
-            <div className="flex ">
+            <div
+                style={{ maxHeight: `calc(100vh - ${navHeight}px)` }}
+                className={` flex bg-[var(--color-bg-base)] text-[var(--color-text-muted)]`}>
                 <Sidebar />
                 <ChatContainer />
             </div>

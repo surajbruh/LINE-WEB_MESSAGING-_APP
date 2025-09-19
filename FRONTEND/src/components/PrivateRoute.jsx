@@ -1,6 +1,6 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useAsyncError } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { checkAuthThunk } from "../features/auth/authSlice";
 import { errorToast } from "../utils/notification";
 
@@ -22,7 +22,7 @@ const PrivateRoute = ({ children }) => {
     if (isLoading.checkAuth) {
         return (
             <>
-                <div className="flex items-center justify-center min-h-screen px-4 bg-gray-100 text-gray-900 dark:bg-[#111b21] dark:text-white">
+                <div className="flex items-center justify-center min-h-screen px-4 bg-[var(--color-bg-base)] text-[var(--color-text-primary)]">
                     <h1 className="uppercase font-light text-3xl text-center my-8">loading...</h1>
                 </div >
             </>

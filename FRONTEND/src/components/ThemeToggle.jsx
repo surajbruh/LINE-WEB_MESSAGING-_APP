@@ -14,7 +14,7 @@ export default function ThemeToggle() {
     return (
         <button
             onClick={() => setDark(!dark)}
-            className="p-2 rounded-full border-[var(--color-primary-border) bg-[var(--color-bg-base)] text-[var(--color-text-primary)] "
+            className="p-2 mx-6 border-2 border-[var(--color-border-secondary)] rounded-full border-[var(--color-primary-border) bg-[var(--color-bg-base)] text-[var(--color-text-primary)] "
         >
             {dark ? "🌞" : "🌙"}
         </button>

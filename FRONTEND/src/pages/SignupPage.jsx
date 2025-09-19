@@ -4,6 +4,7 @@ import { signUpThunk } from "../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { successToast, errorToast } from "../utils/notification";
 import { UserRound, Mail, Key, Eye, EyeClosed } from "lucide-react";
+import { useHeightContext } from "../utils/heightContext";
 
 const SignupPage = () => {
     const [username, setUsername] = useState("");
@@ -29,8 +30,12 @@ const SignupPage = () => {
         }
     };
 
+    const navHeight = useHeightContext()
+
     return (
-        <div className="flex items-center justify-center min-h-screen px-4 bg-[var(--color-bg-base)] text-[var(--color-text-primary)]">
+        <div
+            style={{ minHeight: `calc(100vh - ${navHeight}px)` }}
+            className="flex items-center justify-center px-4 bg-[var(--color-bg-base)] text-[var(--color-text-primary)]">
             <div className="w-full max-w-md rounded-xl shadow-md p-6 bg-[var(--color-bg-surface)] text-[var(--color-text-primary)]">
                 {/* Header */}
                 <h1 className="uppercase font-semibold text-3xl text-center mb-6">

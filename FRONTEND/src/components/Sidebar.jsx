@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { fetchMessagesThunk, fetchUsersThunk, setActiveChat } from "../features/chat/chatSlice"
 import { useDispatch, useSelector } from "react-redux"
 import Chat from "./Chat"
+import { useHeightContext } from "../utils/heightContext"
 
 const Sidebar = () => {
 
@@ -19,9 +20,11 @@ const Sidebar = () => {
         dispatch(fetchMessagesThunk(user._id))
     }
 
+    // TODO: MAYBE ADD A BETTER LOADER/LOADING COMPONENT
+
     return (
         <>
-            <div className="">
+            <div className="overflow-y-scroll">
                 {
                     loadingUsers ?
                         <h1>loading...</h1>
@@ -37,7 +40,7 @@ const Sidebar = () => {
                             )
                         })
                 }
-            </div>
+            </div >
         </>
     )
 }

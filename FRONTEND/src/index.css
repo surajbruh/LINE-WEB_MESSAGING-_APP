@@ -1,5 +1,24 @@
 @import "tailwindcss";
 
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* body {
+    overflow-x: hidden;
+  } */
+}
+
+
 /* ================================
    🌗 THEME VARIABLE TEMPLATE
    ================================ */
@@ -9,6 +28,7 @@
 /* TODO: DARK_BORDER */
 
 :root {
+
   /* 🌈 Brand Colors */
   --color-primary: #2563eb;
   --color-primary-hover: #1d4ed8;
@@ -28,6 +48,9 @@
   --color-text-inverse: #ffffff;
 
   --color-primary-border: #111827;
+  
+  --color-hover-bg: #f3f4f6;
+  --color-active-bg: #e5e7eb;
 
   /* ✅ State Colors */
   --color-success: #22c55e;
@@ -39,7 +62,7 @@
   --color-card-bg: #ffffff;
   --color-modal-bg: #ffffff;
   --color-input-bg: #ffffff;
-  --color-hover-bg: #f3f4f6;
+
 
   /* 💬 Messaging Specific */
   --color-bubble-self: #e0f2fe;
@@ -156,26 +179,18 @@
 
 
 .dark {
-  /* 🎨 Neutral Palette */
-  /* Dark Base (replaces your light base) */
+
   --color-bg-base: #0d0e0e;
-  /* A deeper, richer near-black */
-
-  /* Surfaces (cards, modals, sheets) */
   --color-bg-surface: #1a1c1c;
-  /* Slightly lighter than base */
   --color-bg-muted: #252828;
-  /* For subtle differentiation, e.g., hover states */
 
-  /* Text (High contrast for readability) */
   --color-text-primary: #f9fafb;
-  /* Near-white for primary text */
   --color-text-secondary: #d1d5db;
-  /* Light gray for secondary text */
   --color-text-muted: #9ca3af;
-  /* Gray for disabled/placeholder text */
   --color-text-inverse: #0d0e0e;
-  /* Dark color to put on light accents */
 
   --color-primary-border: #737375;
+  --color-hover-bg: rgba(255, 255, 255, 0.08);
+  --color-active-bg: rgba(255, 255, 255, 0.12);
+  --color-focus-ring: rgba(66, 153, 225, 0.6);
 }
