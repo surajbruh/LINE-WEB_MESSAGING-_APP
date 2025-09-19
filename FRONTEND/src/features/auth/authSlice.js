@@ -1,0 +1,128 @@
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { checkAuth, login, logout, signUp } from "./authAPI";
+import { connectSocket, disconnectSocket } from "../../socket";
+
+// TODO: setup socket and real-time communication, Proper Error handling in the HandleValidation middleware
+
+export const signUpThunk = createAsyncThunk("auth/signup", async (payload, { rejectWithValue }) => {
+
+    try {
+        const result = await signUp(payload)
+        const { success, message } = result
+        if (!success) return rejectWithValue(message)
+        return result.user
+    } catch (error) {
+        return rejectWithValue(error.message)
+    }
+})
+
+export const loginThunk = createAsyncThunk("auth/login", async (payload, { rejectWithValue }) => {
+    try {
+        const result = await login(payload)
+        const { success, message } = result
+
+        if (!success) return rejectWithValue(message)
+
+        connectSocket(result.user?.id)
+        return result.user
+    } catch (error) {
+        return rejectWithValue(error.message)
+    }
+})
+
+export const checkAuthThunk = createAsyncThunk("auth/checkAuth", async (_, { rejectWithValue }) => {
+    try {
+        const result = await checkAuth()
+        const { success, message } = result
+
+        if (!success) return rejectWithValue(message)
+
+        connectSocket(result.user?.id)
+        return result.user
+    } catch (error) {
+        return rejectWithValue(error.message)
+    }
+})
+
+export const logoutThunk = createAsyncThunk("auth/logout", async (_, { rejectWithValue }) => {
+    try {
+        const result = await logout()
+        const { success, message } = result
+
+        if (!success) return rejectWithValue(message)
+
+        disconnectSocket()
+        return result.user
+    } catch (error) {
+        return rejectWithValue(error.message)
+    }
+})
+
+const authSlice = createSlice({
+    name: "auth",
+    initialState: {
+        authUser: null,
+        onlineUsers: null,
+        isLoading: {
+            signUp: false,
+            login: false,
+            logout: false,
+            checkAuth: false
+        },
+    },
+    reducers: {
+        setOnlineUsers: (state, action) => { state.onlineUsers = action.payload }
+    },
+    extraReducers: (builder) => {
+        builder
+            // signUp
+            .addCase(signUpThunk.fulfilled, (state, action) => {
+                state.isLoading.signUp = false;
+            })
+            .addCase(signUpThunk.rejected, (state, action) => {
+                state.isLoading.signUp = false;
+            })
+            .addCase(signUpThunk.pending, (state) => {
+                state.isLoading.signUp = true;
+            })
+            // login
+            .addCase(loginThunk.fulfilled, (state, action) => {
+                state.isLoading.login = false;
+                state.authUser = action.payload;
+            })
+            .addCase(loginThunk.rejected, (state, action) => {
+                state.isLoading.login = false;
+            })
+            .addCase(loginThunk.pending, (state) => {
+                state.isLoading.login = true;
+            })
+            // logout
+            .addCase(logoutThunk.fulfilled, (state, action) => {
+                state.isLoading.logout = false;
+                state.authUser = null;
+            })
+            .addCase(logoutThunk.rejected, (state, action) => {
+                state.isLoading.logout = false;
+            })
+            .addCase(logoutThunk.pending, (state) => {
+                state.isLoading.logout = true;
+            })
+            // checkAuth
+            .addCase(checkAuthThunk.fulfilled, (state, action) => {
+                state.isLoading.checkAuth = false;
+                state.authUser = action.payload;
+            })
+            .addCase(checkAuthThunk.rejected, (state, action) => {
+                state.isLoading.checkAuth = false;
+            })
+            .addCase(checkAuthThunk.pending, (state) => {
+                state.isLoading.checkAuth = true;
+            });
+    }
+
+})
+
+export const { setOnlineUsers } = authSlice.actions
+
+const authReducer = authSlice.reducer
+export default authReducer
