@@ -48,9 +48,13 @@
   --color-text-inverse: #ffffff;
 
   --color-primary-border: #111827;
-  
+
   --color-hover-bg: #f3f4f6;
   --color-active-bg: #e5e7eb;
+
+  /* chat Messages */
+  --color-message-sender: #D9FDD3;
+  --color-message-receiver: #ffffff;
 
   /* ✅ State Colors */
   --color-success: #22c55e;
@@ -193,4 +197,8 @@
   --color-hover-bg: rgba(255, 255, 255, 0.08);
   --color-active-bg: rgba(255, 255, 255, 0.12);
   --color-focus-ring: rgba(66, 153, 225, 0.6);
+
+  /* chat Messages */
+  --color-message-sender: #144D37;
+  --color-message-receiver: #242626;
 }

@@ -25,9 +25,9 @@ const MessageInput = () => {
     return (
         <form
             onSubmit={handleMessage}
-            className="w-full p-2"
+            className="w-full py-2 px-8 my-4"
         >
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 text-[var(--color-text-primary)] ">
                 {/* Input */}
                 <input
                     ref={inputRef}
@@ -35,11 +35,8 @@ const MessageInput = () => {
                     onChange={(e) => setText(e.target.value)}
                     type="text"
                     placeholder="Type a message..."
-                    className="flex-1 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-sm sm:text-base
-                               border border-gray-300 dark:border-gray-600
-                               bg-white dark:bg-[#2a3b45]
-                               text-gray-900 dark:text-white
-                               focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="flex-1 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full outline-none text-sm sm:text-base
+                     bg-[var(--color-bg-surface)] placeholder:text-[var(--color-text-muted)] "
                 />
 
                 {/* Send Button */}

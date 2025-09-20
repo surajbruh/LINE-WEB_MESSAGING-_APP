@@ -1,6 +1,5 @@
+// calculates the height of the an element
 const getElementHeight = (id) => {
-    // console.log(id)
     return document.getElementById(id).offsetHeight;
 }
-
 export default getElementHeight
