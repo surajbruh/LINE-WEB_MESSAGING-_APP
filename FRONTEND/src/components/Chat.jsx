@@ -14,7 +14,7 @@ const Chat = ({ user }) => {
                 `}>
                 {/* Avatar */}
                 <div className="relative">
-                    {onlineUsers.includes(user._id) && <div className="absolute z-10 right-0 bottom-0 rounded-full bg-green-500 w-[1rem] h-[1rem]" />}
+                    {onlineUsers?.includes(user._id) && <div className="absolute z-10 right-0 bottom-0 rounded-full bg-green-500 w-[1rem] h-[1rem]" />}
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden flex-shrink-0">
                         <img
                             className="w-full h-full object-cover object-center"

@@ -15,10 +15,10 @@ const ActiveChat = () => {
         <div className=" flex items-center gap-2 px-4 py-2 bg-[var(--color-active-bg)] text-[var(--color-text-primary)] ">
             <div className="relative">
                 <div className="w-[3rem] h-[3rem] overflow-hidden rounded-full">
-                    {onlineUsers.includes(activeChat._id) && <div className="absolute z-10 right-0 bottom-0 rounded-full bg-green-500 w-[1rem] h-[1rem]"></div>}
+                    {onlineUsers?.includes(activeChat._id) && <div className="absolute z-10 right-0 bottom-0 rounded-full bg-green-500 w-[1rem] h-[1rem]"></div>}
                     <img
                         className="w-full h-full object-cover object-center"
-                        src="https://i.pinimg.com/736x/18/b5/b5/18b5b599bb873285bd4def283c0d3c09.jpg" alt="" />
+                        src={"/avatar.png"} alt="" />
                 </div>
             </div>
             <div className="flex flex-col overflow-hidden">
@@ -26,7 +26,7 @@ const ActiveChat = () => {
                     {username}
                 </h1>
                 <h1 className="uppercase font-mono text-xs sm:text-sm truncate text-[var(--color-text-muted)] ">
-                    last seen
+                    {onlineUsers?.includes(activeChat._id) ? "online" : "offline"}
                 </h1>
             </div>
         </div>

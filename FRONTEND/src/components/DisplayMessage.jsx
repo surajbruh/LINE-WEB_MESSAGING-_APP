@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react"
 import { useSelector } from "react-redux"
+import { formatMessageTime } from "../utils/script"
 
 const DisplayMessage = () => {
 
@@ -16,21 +17,21 @@ const DisplayMessage = () => {
 
 
     return (
-        <div className="minimalist-scrollbar bg-[var(--color-bg-base)] text-[var(--color-text-primary)] h-screen overflow-y-scroll">
-            <ul className="space-y-2 p-2 sm:p-3">
+        <div className="minimalist-scrollbar bg-[var(--color-bg-base)] text-[var(--color-text-primary)] h-screen overflow-y-scroll px-4">
+            <ul className="space-y-8 p-2 sm:p-3">
                 {
-                    messages.map((e, index) => {
-                        const { senderId, receiverId, createdAt, text } = e
+                    messages.map((msg, index) => {
+                        const { senderId, createdAt, text } = msg
                         return (
                             <li
                                 className={`w-full flex ${senderId === authUser.id ? "justify-end" : "justify-items-start"}`}
                                 key={index} >
-                                <div className="">
-                                    <h1 className="font-extralight text-sm ">{createdAt}</h1>
-                                    <div className={`px-4 py-2 rounded-[8px] w-max 
-                                        ${senderId === authUser.id ? "bg-[var(--color-message-sender)]" : "bg-[var(--color-message-receiver)] "} 
+                                <div className="relative">
+                                    <p className={`text-xs text-[var(--color-text-muted)] ${senderId === authUser.id && "text-right"} `}>{formatMessageTime(createdAt)}</p>
+                                    <div className={`px-2 py-1 rounded-[8px] w-max 
+                                        ${senderId === authUser.id ? "bg-[var(--color-message-sender)]" : "bg-[var(--color-message-receiver)]"} 
                                         shadow-[var(--shadow-md)]`}>
-                                        <p>{text} </p>
+                                        <p className="">{text} </p>
                                     </div>
                                 </div>
                             </li>
