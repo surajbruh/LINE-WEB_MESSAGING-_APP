@@ -8,7 +8,7 @@ import Navbar from "./components/Navbar"
 import ProfilePage from "./pages/ProfilePage"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { checkAuthThunk } from "./features/auth/authSlice"
+import { setOnlineUsers } from "./features/auth/authSlice"
 import { socket } from "./socket"
 import { addMessage } from "./features/chat/chatSlice"
 import TestComponent from "./components/Test"
@@ -17,7 +17,7 @@ import getElementHeight from "./utils/script"
 
 const App = () => {
 
-  const { authUser } = useSelector(state => state.auth)
+  const { authUser, onlineUsers } = useSelector(state => state.auth)
   const { messages } = useSelector(state => state.chatStore)
   const dispatch = useDispatch()
 
@@ -27,7 +27,7 @@ const App = () => {
     if (!authUser) return
 
     socket.on("onlineUsers", (users) => {
-      console.log(users)
+      dispatch(setOnlineUsers(users))
     })
 
     socket.on("newMessage", (msg) => {
@@ -40,6 +40,12 @@ const App = () => {
     }
   }, [authUser, dispatch])
 
+  //onlineUsers
+  useEffect(() => {
+    console.log(onlineUsers)
+  }, [onlineUsers])
+
+  //TODO: IMPROVE THIS FUNCTON 
   useEffect(() => {
     setNavHeight(getElementHeight("navbar"))
   }, [])
@@ -66,7 +72,6 @@ const App = () => {
               <PrivateRoute>
                 <HomePage />
               </PrivateRoute>
-              // authUser ? < HomePage /> : <Navigate to="login" />
             } />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<LoginPage />} />

@@ -35,7 +35,7 @@ const Sidebar = () => {
                                     className="focus:border-2 border-e-amber-500"
                                     onClick={() => handleChat(user)}
                                     key={user._id}>
-                                    < Chat active={activeChat?._id === user._id} username={user.username} />
+                                    < Chat user={user} />
                                 </li>
                             )
                         })
