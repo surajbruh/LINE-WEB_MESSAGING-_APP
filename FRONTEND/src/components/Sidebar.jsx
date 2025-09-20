@@ -24,7 +24,7 @@ const Sidebar = () => {
 
     return (
         <>
-            <div className="overflow-y-scroll">
+            <div className="overflow-y-scroll minimalist-scrollbar">
                 {
                     loadingUsers ?
                         <h1>loading...</h1>
