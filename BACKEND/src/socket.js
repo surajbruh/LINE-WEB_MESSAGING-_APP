@@ -54,6 +54,26 @@ io.on("connection", (socket) => {
         io.emit("onlineUsers", Object.keys(userSocketMap))
     }
 
+    socket.on('typing', (e) => {
+        const { sender, receiver } = e
+
+        //if receiver is online then only emit the event
+        if (Object.keys(userSocketMap).includes(receiver)) {
+            const receiverSocketId = getUserSocketId(receiver)
+            io.to(receiverSocketId).emit('typing', sender)
+        }
+    })
+
+    socket.on("stopTyping", (e) => {
+        const { sender, receiver } = e
+
+        //if receiver is online then only emit the event
+        if (Object.keys(userSocketMap).includes(receiver)) {
+            const receiverSocketId = getUserSocketId(receiver)
+            io.to(receiverSocketId).emit('stopTyping', sender)
+        }
+    })
+
     socket.on("disconnect", () => {
         console.log(`${socket.id} disconnected`)
         if (socket.userId) {
