@@ -1,9 +1,35 @@
+import { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
+import { socket } from "../socket"
 
 const Chat = ({ user }) => {
 
     const { activeChat } = useSelector(state => state.chatStore)
     const { onlineUsers } = useSelector(state => state.auth)
+
+    const [isTyping, setIsTyping] = useState(false)
+
+    useEffect(() => {
+        const handleTyping = (senderId) => {
+            if (senderId === user._id) {
+                setIsTyping(true)
+            }
+        }
+
+        const handleStopTyping = (senderId) => {
+            if (senderId === user._id) {
+                setIsTyping(false)
+            }
+        }
+
+        socket.on('typing', handleTyping)
+        socket.on('stopTyping', handleStopTyping)
+
+        return () => {
+            socket.off('typing')
+            socket.off('stopTyping')
+        }
+    }, [activeChat])
 
     return (
         <div className="w-full bg-[var(--color-bg-surface)] text-[var(--color-text-primary)] ">
@@ -18,7 +44,7 @@ const Chat = ({ user }) => {
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden flex-shrink-0">
                         <img
                             className="w-full h-full object-cover object-center"
-                            src="https://i.pinimg.com/736x/18/b5/b5/18b5b599bb873285bd4def283c0d3c09.jpg"
+                            src={"/avatar.png" || "https://i.pinimg.com/736x/18/b5/b5/18b5b599bb873285bd4def283c0d3c09.jpg"}
                             alt="user avatar"
                         />
                     </div>
@@ -30,7 +56,7 @@ const Chat = ({ user }) => {
                         {user.username}
                     </h1>
                     <h1 className="uppercase font-mono text-xs sm:text-sm truncate text-[var(--color-text-muted)]">
-                        last message goes here and will truncate if too long
+                        {isTyping ? <p className="italic text-[var(--color-text-muted)]" >{`${user.username} is typing...`}</p> : "last message goes here and will truncate if too long"}
                     </h1>
                 </div>
             </div>

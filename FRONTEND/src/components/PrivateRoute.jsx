@@ -1,12 +1,14 @@
-import { Navigate, useAsyncError } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { checkAuthThunk } from "../features/auth/authSlice";
 import { errorToast } from "../utils/notification";
 
 const PrivateRoute = ({ children }) => {
 
-    const { authUser, isLoading } = useSelector(state => state.auth)
+    const location = useLocation()
+
+    const { authUser, isLoading, initialized } = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
     const verifyUser = async () => {
@@ -15,11 +17,12 @@ const PrivateRoute = ({ children }) => {
     }
 
     useEffect(() => {
-        console.log('verify')
-        verifyUser()
-    }, [dispatch])
+        if (!initialized) {
+            verifyUser()
+        }
+    }, [dispatch, initialized])
 
-    if (isLoading.checkAuth) {
+    if (!initialized || isLoading.checkAuth) {
         return (
             <>
                 <div className="flex items-center justify-center min-h-screen px-4 bg-[var(--color-bg-base)] text-[var(--color-text-primary)]">
@@ -29,7 +32,7 @@ const PrivateRoute = ({ children }) => {
         )
     }
 
-    return authUser ? children : <Navigate to={"/login"} />
+    return authUser ? children : <Navigate to={"/login"} replace state={{ from: location }} />
 }
 
 export default PrivateRoute

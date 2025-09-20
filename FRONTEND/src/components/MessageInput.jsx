@@ -2,17 +2,18 @@ import { useState, useRef, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Send } from "lucide-react"
 import { sendMessageThunk } from "../features/chat/chatSlice"
+import { socket } from "../socket"
 
 const MessageInput = () => {
+
     const [text, setText] = useState("")
     const inputRef = useRef(null)
+    const typingTimeoutRef = useRef(null)
 
-    // const { user } = useSelector((state) => state.user)
+    const { authUser } = useSelector(state => state.auth)
     const { activeChat } = useSelector((state) => state.chatStore)
-
     const dispatch = useDispatch()
 
-    // const senderId = user.id
     const receiverId = activeChat?._id
 
     const handleMessage = async (e) => {
@@ -20,7 +21,36 @@ const MessageInput = () => {
         if (!text.trim() || !receiverId) return
 
         dispatch(sendMessageThunk({ receiver_id: receiverId, payload: text }))
+        socket.emit('stopTyping', {
+            sender: authUser.id,
+            receiver: receiverId
+        })
     }
+
+    const handleInput = (e) => {
+        setText(e.target.value)
+        if (!receiverId) return
+        socket.emit('typing', {
+            sender: authUser.id,
+            receiver: receiverId
+        })
+
+        if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current)
+        typingTimeoutRef.current = setTimeout(() => {
+            socket.emit('stopTyping', {
+                sender: authUser.id,
+                receiver: receiverId
+            })
+        }, 1500)
+    }
+
+    useEffect(() => {
+        return () => {
+            if (typingTimeoutRef.current) {
+                clearTimeout(typingTimeoutRef.current)
+            }
+        }
+    }, [])
 
     return (
         <form
@@ -32,7 +62,7 @@ const MessageInput = () => {
                 <input
                     ref={inputRef}
                     value={text}
-                    onChange={(e) => setText(e.target.value)}
+                    onChange={handleInput}
                     type="text"
                     placeholder="Type a message..."
                     className="flex-1 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full outline-none text-sm sm:text-base
