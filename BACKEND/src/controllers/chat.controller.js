@@ -1,6 +1,9 @@
 import { userModel } from "../models/user.model.js"
 import { messageModel } from "../models/message.model.js"
 import { getUserSocketId, io } from "../socket.js"
+import mongoose from "mongoose"
+
+const { Types } = mongoose
 
 export const getUserChats = async (req, res) => {
     const { id: userId } = req.user
@@ -77,4 +80,73 @@ export const sendMessage = async (req, res) => {
         });
     }
 
+}
+
+export const getConversation = async (req, res) => {
+    const { userId } = req.params
+    const ObjectId = Types.ObjectId
+
+    if (!ObjectId.isValid(userId)) {
+        return res.status(400).json({ success: false, error: "Invalid userId" })
+    }
+
+    try {
+        const conversations = await messageModel.aggregate([
+            {
+                $match: {
+                    $or: [
+                        { senderId: new ObjectId(userId) },
+                        { receiverId: new ObjectId(userId) }
+                    ]
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        $cond: {
+                            if: { $eq: ["$senderId", new ObjectId(userId)] },
+                            then: "$receiverId",
+                            else: "$senderId"
+                        }
+                    },
+                    lastMessageTime: { $max: "$createdAt" },
+                    lastMessage: { $last: "$text" },
+                    lastMessageSender: { $last: "$senderId" }
+                }
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "userDetails"
+                }
+            },
+            {
+                $unwind: "$userDetails"
+            },
+            {
+                $project: {
+                    partnerId: "$_id",
+                    username: "$userDetails.username",
+                    avatar: "$userDetails.avatar",
+                    lastMessage: 1,
+                    lastMessageTime: 1,
+                    lastMessageSender: 1
+                }
+            }
+        ])
+
+        res.status(200).json({
+            success: true,
+            conversations
+        })
+
+    } catch (error) {
+        console.error("GET CONVERSATIONS ERROR:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong"
+        });
+    }
 }
