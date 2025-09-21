@@ -45,7 +45,7 @@ const cookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
-    maxAge: 30 * 60 * 1000
+    maxAge: 60 * 60 * 1000
 }
 
 export const login = async (req, res) => {
@@ -69,7 +69,7 @@ export const login = async (req, res) => {
             id: user._id,
             username: user.username,
             email: user.email,
-        }, process.env.JWT_SECRET, { expiresIn: "30min" })
+        }, process.env.JWT_SECRET, { expiresIn: "1h" })
 
         //saves token on the client side (browser)
         res.cookie('userToken', token, cookieOptions)
