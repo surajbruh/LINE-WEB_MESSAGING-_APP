@@ -1,5 +1,8 @@
-import { useState, useEffect, useRef } from "react"
-import { fetchMessagesThunk, fetchUsersThunk, setActiveChat } from "../features/chat/chatSlice"
+import { useState, useEffect } from "react"
+import {
+    fetchConversationsThunk,
+    fetchMessagesThunk, fetchUsersThunk, setActiveChat
+} from "../features/chat/chatSlice"
 import { useDispatch, useSelector } from "react-redux"
 import Chat from "./Chat"
 import SearchBar from "./Searchbar"
@@ -27,11 +30,13 @@ const Sidebar = () => {
         console.log(query, filteredUser)
     }
 
-    const { users, activeChat, loadingUsers } = useSelector(state => state.chatStore)
+    const { authUser } = useSelector(state => state.auth)
+    const { users, activeChat, conversations, isLoading } = useSelector(state => state.chatStore)
     const dispatch = useDispatch()
 
     useEffect(() => {
         dispatch(fetchUsersThunk())
+        dispatch(fetchConversationsThunk(authUser.id))
     }, [dispatch])
 
     const handleChat = async (user) => {
@@ -47,8 +52,37 @@ const Sidebar = () => {
         <>
             <div className="relative overflow-y-scroll minimalist-scrollbar">
                 <SearchBar handleChange={handleChange} />
+                {/* <div>
+                    {
+                        isLoading.users ?
+                            <h1>loading...</h1>
+                            :
+                            (filteredUser.length > 0) ?
+                                filteredUser.map((user) => {
+                                    return (
+                                        <li
+                                            className="focus:border-2 border-e-amber-500"
+                                            onClick={() => handleChat(user)}
+                                            key={user._id}>
+                                            < Chat user={user} />
+                                        </li>
+                                    )
+                                })
+                                :
+                                users.map((user) => {
+                                    return (
+                                        <li
+                                            className="focus:border-2 border-e-amber-500"
+                                            onClick={() => handleChat(user)}
+                                            key={user._id}>
+                                            < Chat user={user} />
+                                        </li>
+                                    )
+                                })
+                    }
+                </div> */}
                 {
-                    loadingUsers ?
+                    isLoading.conversations ?
                         <h1>loading...</h1>
                         :
                         (filteredUser.length > 0) ?
@@ -63,13 +97,13 @@ const Sidebar = () => {
                                 )
                             })
                             :
-                            users.map((user) => {
+                            conversations?.map((conversation) => {
                                 return (
                                     <li
                                         className="focus:border-2 border-e-amber-500"
-                                        onClick={() => handleChat(user)}
-                                        key={user._id}>
-                                        < Chat user={user} />
+                                        onClick={() => handleChat(conversation)}
+                                        key={conversation._id}>
+                                        < Chat user={conversation} />
                                     </li>
                                 )
                             })

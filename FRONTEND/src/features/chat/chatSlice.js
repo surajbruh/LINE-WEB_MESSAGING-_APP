@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchMessages, fetchUsers, sendMessage } from "./chatAPI";
+import { fetchMessages, fetchUsers, getConversation, sendMessage } from "./chatAPI";
 
 
 // ==================== THUNKS ====================
@@ -49,17 +49,32 @@ export const sendMessageThunk = createAsyncThunk(
     }
 );
 
+export const fetchConversationsThunk = createAsyncThunk("chat/conversations",
+    async (userId, { rejectWithValue }) => {
+        try {
+            const result = await getConversation(userId)
+            const { success, message, conversations, error } = result
+
+            if (!success) return rejectWithValue(message || error)
+            return conversations
+        } catch (error) {
+            return rejectWithValue(error.message)
+        }
+    })
+
 // ==================== SLICE ====================
 
 const chatSlice = createSlice({
     name: "chatStore",
     initialState: {
         users: [],
+        conversations: [],
         messages: [],
         activeChat: null,
         isLoading: {
             users: false,
             messages: false,
+            conversations: false,
             sendMessage: false,
         },
         error: null,
@@ -74,6 +89,9 @@ const chatSlice = createSlice({
         addMessage: (state, action) => {
             state.messages.push(action.payload);
         },
+        setConversation: (state, action) => {
+            state.conversation = action.payload
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -117,12 +135,25 @@ const chatSlice = createSlice({
             .addCase(sendMessageThunk.rejected, (state, action) => {
                 state.isLoading.sendMessage = false;
                 state.error = action.payload || action.error.message;
+            })
+            // ========== fetchConversationsThunk ==========
+            .addCase(fetchConversationsThunk.pending, (state) => {
+                state.isLoading.conversations = true;
+                state.error = null;
+            })
+            .addCase(fetchConversationsThunk.fulfilled, (state, action) => {
+                state.isLoading.conversations = false;
+                state.conversations = action.payload;
+            })
+            .addCase(fetchConversationsThunk.rejected, (state, action) => {
+                state.isLoading.conversations = false;
+                state.error = action.payload || action.error.message;
             });
     },
 });
 
 // ==================== EXPORTS ====================
-export const { setActiveChat, setMessages, addMessage } = chatSlice.actions;
+export const { setActiveChat, setMessages, addMessage, setConversation } = chatSlice.actions;
 
 const chatReducer = chatSlice.reducer;
 export default chatReducer;

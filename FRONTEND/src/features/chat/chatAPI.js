@@ -43,3 +43,16 @@ export const sendMessage = async ({ receiver_id, payload }) => {
         return { error: error.message }
     }
 }
+
+export const getConversation = async (userId) => {
+    try {
+        const response = await fetch(`${BASE_URL}/api/conversations/${userId}`, {
+            method: 'GET',
+            credentials: "include"
+        })
+        return await response.json()
+    } catch (error) {
+        console.error("CHAT API FETCH_CONVERSTAION ERROR:", error.message)
+        return { error: error.message }
+    }
+}
