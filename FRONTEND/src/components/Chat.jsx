@@ -5,11 +5,12 @@ import { socket } from "../socket"
 const Chat = ({ user }) => {
 
     const { activeChat } = useSelector(state => state.chatStore)
-    const { onlineUsers } = useSelector(state => state.auth)
+    const { authUser, onlineUsers } = useSelector(state => state.auth)
 
     const [isTyping, setIsTyping] = useState(false)
 
     useEffect(() => {
+        console.log(user)
         const handleTyping = (senderId) => {
             if (senderId === user._id) {
                 setIsTyping(true)
@@ -56,7 +57,17 @@ const Chat = ({ user }) => {
                         {user.username}
                     </h1>
                     <h1 className="uppercase font-mono text-xs sm:text-sm truncate text-[var(--color-text-muted)]">
-                        {isTyping ? <p className="italic text-[var(--color-text-muted)]" >{`${user.username} is typing...`}</p> : "last message goes here and will truncate if too long"}
+                        {isTyping ?
+                            <p className="italic text-[var(--color-text-muted)]" >{`${user.username} is typing...`}</p>
+                            :
+                            <>
+                                {authUser.id === user.lastMessageSender ?
+                                    `you: ${user.lastMessage}`
+                                    :
+                                    `${user}: ${user.lastMessage}`
+                                }
+                            </>
+                        }
                     </h1>
                 </div>
             </div>
