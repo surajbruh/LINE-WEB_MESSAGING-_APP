@@ -10,7 +10,7 @@ const Chat = ({ user }) => {
     const [isTyping, setIsTyping] = useState(false)
 
     useEffect(() => {
-        console.log(user)
+        // console.log(user)
         const handleTyping = (senderId) => {
             if (senderId === user._id) {
                 setIsTyping(true)
@@ -64,7 +64,7 @@ const Chat = ({ user }) => {
                                 {authUser.id === user.lastMessageSender ?
                                     `you: ${user.lastMessage}`
                                     :
-                                    `${user}: ${user.lastMessage}`
+                                    `${user.username}: ${user.lastMessage}`
                                 }
                             </>
                         }

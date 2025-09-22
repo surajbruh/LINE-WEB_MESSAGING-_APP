@@ -6,6 +6,7 @@ import {
 import { useDispatch, useSelector } from "react-redux"
 import Chat from "./Chat"
 import SearchBar from "./Searchbar"
+import { useShowContext } from "../utils/showContext"
 
 const Sidebar = () => {
 
@@ -15,6 +16,8 @@ const Sidebar = () => {
     const { authUser } = useSelector(state => state.auth)
     const { users, activeChat, conversations, isLoading } = useSelector(state => state.chatStore)
     const dispatch = useDispatch()
+
+    const { show, setShow } = useShowContext()
 
     //filters conversation
     const handleChange = (e) => {
@@ -37,6 +40,7 @@ const Sidebar = () => {
     }
 
     const handleChat = async (user) => {
+        setShow(true)
         filteredConversation && setFilteredConversation([])
         if (activeChat?._id === user._id) return
         dispatch(setActiveChat(user))
@@ -53,7 +57,7 @@ const Sidebar = () => {
 
     return (
         <>
-            <div className="relative min-w-[20%] overflow-y-scroll minimalist-scrollbar">
+            <div className="relative w-full sm:w-[30%] overflow-y-scroll minimalist-scrollbar">
                 <SearchBar handleChange={handleChange} />
                 {
                     isLoading.conversations ?

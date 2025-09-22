@@ -91,6 +91,9 @@ const chatSlice = createSlice({
         },
         setConversation: (state, action) => {
             state.conversation = action.payload
+        },
+        clearActiveChat: state => {
+            state.activeChat = null
         }
     },
     extraReducers: (builder) => {
@@ -153,7 +156,7 @@ const chatSlice = createSlice({
 });
 
 // ==================== EXPORTS ====================
-export const { setActiveChat, setMessages, addMessage, setConversation } = chatSlice.actions;
+export const { setActiveChat, clearActiveChat, setMessages, addMessage, setConversation } = chatSlice.actions;
 
 const chatReducer = chatSlice.reducer;
 export default chatReducer;

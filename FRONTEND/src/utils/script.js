@@ -1,8 +1,8 @@
 // calculates the height of the an element
-const getElementHeight = (id) => {
+function getElementHeight(id) {
     return document.getElementById(id).offsetHeight;
 }
-export default getElementHeight
+export { getElementHeight }
 
 export function formatMessageTime(date) {
     return new Date(date).toLocaleTimeString("en-US", {

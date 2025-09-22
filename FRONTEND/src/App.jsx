@@ -13,7 +13,7 @@ import { socket } from "./socket"
 import { addMessage } from "./features/chat/chatSlice"
 import TestComponent from "./components/Test"
 import heightContext from "./utils/heightContext"
-import getElementHeight from "./utils/script"
+import { getElementHeight } from "./utils/script"
 
 const App = () => {
 

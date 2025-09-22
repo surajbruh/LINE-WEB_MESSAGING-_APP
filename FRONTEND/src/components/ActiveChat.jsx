@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { socket } from "../socket"
+import { ArrowLeft } from "lucide-react"
+import { useShowContext } from "../utils/showContext"
+import { clearActiveChat } from "../features/chat/chatSlice"
 
 const ActiveChat = () => {
 
     const { onlineUsers } = useSelector(state => state.auth)
     const { activeChat } = useSelector(state => state.chatStore)
+    const dispatch = useDispatch()
     const { username } = activeChat
 
     const [isTyping, setIsTyping] = useState(false)
+
+    const { show, setShow } = useShowContext()
 
     useEffect(() => {
         const handleTyping = (senderId) => {
@@ -34,7 +40,15 @@ const ActiveChat = () => {
     }, [activeChat])
 
     return (
-        <div className=" flex items-center gap-2 px-4 py-2 bg-[var(--color-active-bg)] text-[var(--color-text-primary)] ">
+        <div className="flex items-center gap-2 px-4 py-2 bg-[var(--color-active-bg)] text-[var(--color-text-primary)] ">
+            <button
+                onClick={() => {
+                    setShow(!show)
+                    if (activeChat) dispatch(clearActiveChat())
+                }}
+                className="sm:hidden">
+                <ArrowLeft />
+            </button>
             <div className="relative">
                 <div className="w-[3rem] h-[3rem] overflow-hidden rounded-full">
                     {onlineUsers?.includes(activeChat._id) && <div className="absolute z-10 right-0 bottom-0 rounded-full bg-green-500 w-[1rem] h-[1rem]"></div>}

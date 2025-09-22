@@ -28,7 +28,7 @@ const DisplayMessage = () => {
                                 key={index} >
                                 <div className="relative">
                                     <p className={`text-xs text-[var(--color-text-muted)] ${senderId === authUser.id && "text-right"} `}>{formatMessageTime(createdAt)}</p>
-                                    <div className={`px-2 py-1 rounded-[8px] w-max 
+                                    <div className={`px-2 py-1 rounded-[8px] text-wrap
                                         ${senderId === authUser.id ? "bg-[var(--color-message-sender)]" : "bg-[var(--color-message-receiver)]"} 
                                         shadow-[var(--shadow-md)]`}>
                                         <p className="">{text} </p>
