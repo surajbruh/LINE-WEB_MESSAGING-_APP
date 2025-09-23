@@ -54,7 +54,7 @@ const ActiveChat = () => {
                     {onlineUsers?.includes(activeChat._id) && <div className="absolute z-10 right-0 bottom-0 rounded-full bg-green-500 w-[1rem] h-[1rem]"></div>}
                     <img
                         className="w-full h-full object-cover object-center"
-                        src={"/avatar.png"} alt="" />
+                        src={activeChat.avatar || "/avatar.png"} alt="" />
                 </div>
             </div>
             <div className="flex flex-col overflow-hidden">

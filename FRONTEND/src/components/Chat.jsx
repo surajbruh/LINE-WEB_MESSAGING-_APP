@@ -3,14 +3,13 @@ import { useSelector } from "react-redux"
 import { socket } from "../socket"
 
 const Chat = ({ user }) => {
-
+    console.log(user)
     const { activeChat } = useSelector(state => state.chatStore)
     const { authUser, onlineUsers } = useSelector(state => state.auth)
 
     const [isTyping, setIsTyping] = useState(false)
 
     useEffect(() => {
-        // console.log(user)
         const handleTyping = (senderId) => {
             if (senderId === user._id) {
                 setIsTyping(true)
@@ -45,7 +44,7 @@ const Chat = ({ user }) => {
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden flex-shrink-0">
                         <img
                             className="w-full h-full object-cover object-center"
-                            src={"/avatar.png" || "https://i.pinimg.com/736x/18/b5/b5/18b5b599bb873285bd4def283c0d3c09.jpg"}
+                            src={user.avatar || "/avatar.png"}
                             alt="user avatar"
                         />
                     </div>

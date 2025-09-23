@@ -7,11 +7,12 @@ import { useDispatch, useSelector } from "react-redux"
 import Chat from "./Chat"
 import SearchBar from "./Searchbar"
 import { useShowContext } from "../utils/showContext"
+import { useHeightContext } from "../utils/heightContext"
 
 const Sidebar = () => {
 
     const [query, setQuery] = useState("");
-    const [filteredConversation, setFilteredConversation] = useState([])
+    const [filteredUsers, setFilteredUsers] = useState([])
 
     const { authUser } = useSelector(state => state.auth)
     const { users, activeChat, conversations, isLoading } = useSelector(state => state.chatStore)
@@ -25,23 +26,23 @@ const Sidebar = () => {
         setQuery(value)
 
         if (!value.trim()) {
-            setFilteredConversation([])
+            setFilteredUsers([])
             return;
         }
 
-        const result = conversations.filter((user) => {
+        const result = users.filter((user) => {
             if ((user.username).includes(value)) {
                 return user
             }
         })
 
-        setFilteredConversation(result)
-        console.log(query, filteredConversation)
+        setFilteredUsers(result)
+        console.log(query, filteredUsers)
     }
 
     const handleChat = async (user) => {
         setShow(true)
-        filteredConversation && setFilteredConversation([])
+        filteredUsers && setFilteredUsers([])
         if (activeChat?._id === user._id) return
         dispatch(setActiveChat(user))
         dispatch(fetchMessagesThunk(user._id))
@@ -55,16 +56,20 @@ const Sidebar = () => {
 
     // TODO: MAYBE ADD A BETTER LOADER/LOADING COMPONENT
 
+    const navHeight = useHeightContext()
+
     return (
         <>
-            <div className="relative w-full sm:w-[30%] overflow-y-scroll minimalist-scrollbar">
+            <div
+                style={{ minHeight: `calc(100vh - ${navHeight}px)` }}
+                className="relative w-full sm:w-[30%] overflow-y-scroll minimalist-scrollbar">
                 <SearchBar handleChange={handleChange} />
                 {
                     isLoading.conversations ?
                         <h1>loading...</h1>
                         :
-                        (filteredConversation.length > 0) ?
-                            filteredConversation.map((user) => {
+                        (filteredUsers.length > 0) ?
+                            filteredUsers.map((user) => {
                                 return (
                                     <li
                                         className="focus:border-2 border-e-amber-500"

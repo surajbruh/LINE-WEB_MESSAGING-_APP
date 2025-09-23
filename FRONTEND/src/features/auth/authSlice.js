@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { checkAuth, login, logout, signUp } from "./authAPI";
+import { checkAuth, fetchAvatar, login, logout, signUp, updateAvatar } from "./authAPI";
 import { connectSocket, disconnectSocket } from "../../socket";
 
 // TODO: setup socket and real-time communication, Proper Error handling in the HandleValidation middleware
@@ -58,21 +58,48 @@ export const logoutThunk = createAsyncThunk("auth/logout", async (_, { rejectWit
     }
 })
 
+export const updateAvatarThunk = createAsyncThunk("auth/updateavatar", async (payload, { rejectWithValue }) => {
+    try {
+        const result = await updateAvatar(payload)
+        const { success, message } = result
+
+        if (!success) return rejectWithValue(message)
+        // return result.user.profilePic
+        return
+    } catch (error) {
+        return rejectWithValue(error.message)
+    }
+})
+
+export const fetchAvatarThunk = createAsyncThunk("auth/fetchAvatar", async (_, { rejectWithValue }) => {
+    try {
+        const result = await fetchAvatar()
+        const { success, message } = result
+        if (!success) rejectWithValue(message)
+        return result.avatar
+    } catch (error) {
+        return rejectWithValue(error.message)
+    }
+})
+
 const authSlice = createSlice({
     name: "auth",
     initialState: {
         authUser: null,
+        authUserAvatar: null,
         onlineUsers: null,
         initialized: false,
         isLoading: {
             signUp: false,
             login: false,
             logout: false,
-            checkAuth: false
+            checkAuth: false,
+            avatar: false,
+            fetchAvatar: false,
         },
     },
     reducers: {
-        setOnlineUsers: (state, action) => { state.onlineUsers = action.payload }
+        setOnlineUsers: (state, action) => { state.onlineUsers = action.payload },
     },
     extraReducers: (builder) => {
         builder
@@ -121,6 +148,28 @@ const authSlice = createSlice({
             })
             .addCase(checkAuthThunk.pending, (state) => {
                 state.isLoading.checkAuth = true;
+            })
+            // updateAvatar
+            .addCase(updateAvatarThunk.fulfilled, (state, action) => {
+                state.isLoading.avatar = false;
+                // state.authUser.avatar = action.payload;
+            })
+            .addCase(updateAvatarThunk.rejected, (state, action) => {
+                state.isLoading.avatar = false;
+            })
+            .addCase(updateAvatarThunk.pending, (state) => {
+                state.isLoading.avatar = true;
+            })
+            // fetchAvatar
+            .addCase(fetchAvatarThunk.fulfilled, (state, action) => {
+                state.isLoading.fetchAvatar = false;
+                state.authUserAvatar = action.payload;
+            })
+            .addCase(fetchAvatarThunk.rejected, (state, action) => {
+                state.isLoading.fetchAvatar = false;
+            })
+            .addCase(fetchAvatarThunk.pending, (state) => {
+                state.isLoading.fetchAvatar = true;
             });
     }
 

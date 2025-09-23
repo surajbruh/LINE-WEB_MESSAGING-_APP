@@ -21,6 +21,9 @@ const MessageInput = () => {
         if (!text.trim() || !receiverId) return
 
         dispatch(sendMessageThunk({ receiver_id: receiverId, payload: text }))
+        
+        setText("")
+
         socket.emit('stopTyping', {
             sender: authUser.id,
             receiver: receiverId
