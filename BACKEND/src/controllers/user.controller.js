@@ -7,7 +7,10 @@ export const setProfilePic = async (req, res) => {
         const file = req.file
         const { id } = req.user
 
-        if (!file) return res.status(409).json({ error: "no file uploaded" })
+        if (!file) return res.status(409).json({
+            success: false,
+            error: "no file uploaded"
+        })
 
         const filename = `${uuidv4()}-${file.originalname}`
         const fileOptions = {
@@ -17,51 +20,62 @@ export const setProfilePic = async (req, res) => {
         }
 
         const { data, error } = await supabase.storage
-            .from("LINE")
+            .from("LINE_AVATAR")
             .upload(filename, file.buffer, fileOptions)
 
-        if (error) return res.status(500).json({ error: error.message })
+        if (error) return res.status(500).json({
+            success: false,
+            error: error.message
+        })
 
-        const { data: signedUrl } = await supabase.storage
-            .from("LINE")
-            .createSignedUrl(filename, 3600)
+        const { data: publicUrlData } = supabase.storage
+            .from("LINE_AVATAR")
+            .getPublicUrl(filename)
 
-        const user = await userModel.findByIdAndUpdate(id, { profilePic: filename }, { new: true }).select("+profilePic")
+        const user = await userModel.findByIdAndUpdate(id, { profilePic: publicUrlData.publicUrl }, { new: true }).select("+profilePic")
 
         res.status(200).json({
             success: true,
             message: "profile pic uploaded successfully",
-            path: filename,
+            user
         })
     } catch (error) {
         console.error("PROFILE_PIC CONTROLLER ERROR:", error);
-        return res.status(500).json({ message: "Something went wrong" });
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong"
+        });
     }
 
 }
 
-export const getProfilePic = async (req, res) => {
+export const getAvatar = async (req, res) => {
     try {
-        const { id } = req.user
-        const user = await userModel.findById(id).select("+profilePic")
+        const user = await userModel.findById(req.user?.id)
 
-        if (!user || !user.profilePic) {
-            return res.status(404).json({ error: "No profile picture found" })
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
         }
 
-        const { data, error } = await supabase.storage
-            .from("LINE")
-            .createSignedUrl(user.profilePic, 1800)
-
-        if (error) return res.status(500).json({ error: error.message })
+        if (!user.profilePic) {
+            return res.status(404).json({
+                success: false,
+                message: "No profile picture found"
+            });
+        }
 
         res.status(200).json({
             success: true,
-            url: data.signedUrl
+            avatar: user.profilePic
         })
     } catch (error) {
-        console.error("GET_PROFILE_PIC ERROR:", error);
-        return res.status(500).json({ message: "Something went wrong" });
+        console.error("GET_AVATAR CONTROLLER ERROR:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong"
+        });
     }
-
 }

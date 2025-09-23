@@ -129,7 +129,7 @@ export const getConversation = async (req, res) => {
                 $project: {
                     partnerId: "$_id",
                     username: "$userDetails.username",
-                    avatar: "$userDetails.avatar",
+                    avatar: "$userDetails.profilePic",
                     lastMessage: 1,
                     lastMessageTime: 1,
                     lastMessageSender: 1
