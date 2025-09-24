@@ -30,11 +30,8 @@ export const sendMessage = async ({ receiver_id, payload }) => {
     try {
         const response = await fetch(`${BASE_URL}/api/send/${receiver_id}`, {
             method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
             credentials: "include",
-            body: JSON.stringify({ text: payload })
+            body: payload
         })
 
         return await response.json()

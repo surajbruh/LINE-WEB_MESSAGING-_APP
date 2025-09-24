@@ -17,7 +17,6 @@ const ProfilePage = () => {
     useEffect(() => {
         if (!selectedFile) return
         const objectUrl = URL.createObjectURL(selectedFile)
-        console.log(objectUrl)
         setPreviewUrl(objectUrl)
 
         return () => URL.revokeObjectURL(objectUrl)

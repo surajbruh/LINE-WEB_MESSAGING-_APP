@@ -3,7 +3,6 @@ import { useSelector } from "react-redux"
 import { socket } from "../socket"
 
 const Chat = ({ user }) => {
-    console.log(user)
     const { activeChat } = useSelector(state => state.chatStore)
     const { authUser, onlineUsers } = useSelector(state => state.auth)
 
@@ -44,7 +43,7 @@ const Chat = ({ user }) => {
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden flex-shrink-0">
                         <img
                             className="w-full h-full object-cover object-center"
-                            src={user.avatar || "/avatar.png"}
+                            src={user.avatar || user.profilePic || "/avatar.png"}
                             alt="user avatar"
                         />
                     </div>
@@ -63,7 +62,10 @@ const Chat = ({ user }) => {
                                 {authUser.id === user.lastMessageSender ?
                                     `you: ${user.lastMessage}`
                                     :
-                                    `${user.username}: ${user.lastMessage}`
+                                    user.lastMessage ?
+                                        `${user.username}: ${user.lastMessage}`
+                                        :
+                                        `TAP TO CHAT`
                                 }
                             </>
                         }

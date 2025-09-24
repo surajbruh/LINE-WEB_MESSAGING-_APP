@@ -19,6 +19,7 @@
   --color-bg-base: #F7F5F3;
   --color-bg-surface: #ffffff;
   --color-bg-muted: #f3f4f6;
+  --color-bg-glass: rgba(0, 0, 0, 0.063);
 
   --color-text-primary: #111827;
   --color-text-secondary: #4b5563;
@@ -42,6 +43,7 @@
   --color-bg-base: #0d0e0e;
   --color-bg-surface: #1a1c1c;
   --color-bg-muted: #252828;
+  --color-bg-glass: rgba(255, 255, 255, 0.063);
 
   --color-text-primary: #f9fafb;
   --color-text-secondary: #d1d5db;

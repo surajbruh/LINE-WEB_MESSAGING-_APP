@@ -8,6 +8,7 @@ import Chat from "./Chat"
 import SearchBar from "./Searchbar"
 import { useShowContext } from "../utils/showContext"
 import { useHeightContext } from "../utils/heightContext"
+import { errorToast } from "../utils/notification"
 
 const Sidebar = () => {
 
@@ -45,7 +46,11 @@ const Sidebar = () => {
         filteredUsers && setFilteredUsers([])
         if (activeChat?._id === user._id) return
         dispatch(setActiveChat(user))
-        dispatch(fetchMessagesThunk(user._id))
+
+        const result = await dispatch(fetchMessagesThunk(user._id))
+        if (fetchMessagesThunk.rejected.match(result)) {
+            errorToast(result.payload)
+        }
     }
 
     //fetches all the users and conversations
