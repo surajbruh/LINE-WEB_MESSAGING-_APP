@@ -2,6 +2,8 @@ import { userModel } from "../models/user.model.js"
 import { messageModel } from "../models/message.model.js"
 import { getUserSocketId, io } from "../socket.js"
 import mongoose from "mongoose"
+import supabase from "../config/supbaseClient.js"
+import { v4 as uuidv4 } from 'uuid'
 
 const { Types } = mongoose
 
@@ -51,12 +53,39 @@ export const sendMessage = async (req, res) => {
         const { id: receiverId } = req.params
         const { id: senderId } = req.user
 
-        const { text } = req.body
+        const { message } = req.body
+        let mediaUrl = null;
+
+        if (req.file) {
+            const { file } = req
+            const filename = `${uuidv4()}-${file.originalname}`
+            const fileOptions = {
+                contentType: file.mimetype,
+                cacheControl: '3600',
+                upsert: false
+            }
+
+            const { data, error } = await supabase.storage
+                .from("LINE_AVATAR")
+                .upload(filename, file.buffer, fileOptions)
+
+            if (error) return res.status(500).json({
+                success: false,
+                error: error.message
+            })
+
+            const { data: publicUrlData } = supabase.storage
+                .from("LINE_AVATAR")
+                .getPublicUrl(filename)
+
+            mediaUrl = publicUrlData.publicUrl
+        }
 
         const newMessage = await messageModel.create({
             senderId,
             receiverId,
-            text,
+            text: message || "",
+            image: mediaUrl
         })
 
         res.status(201).json({
@@ -66,7 +95,6 @@ export const sendMessage = async (req, res) => {
         })
 
         const receiverSocketId = getUserSocketId(receiverId)
-        console.log(getUserSocketId(receiverId))
 
         if (receiverSocketId) {
             io.to(receiverSocketId).emit("newMessage", newMessage)

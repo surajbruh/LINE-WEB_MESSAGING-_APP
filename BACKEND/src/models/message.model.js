@@ -13,11 +13,11 @@ const messageSchema = new mongoose.Schema({
     },
     text: {
         type: String,
-        required: true
+        // required: true
     },
-    // image: {
-    //     type: String
-    // },
+    image: {
+        type: String
+    },
 }, { timestamps: true })
 
 export const messageModel = mongoose.model("Message", messageSchema)
