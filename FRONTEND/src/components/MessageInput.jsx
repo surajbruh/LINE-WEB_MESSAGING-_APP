@@ -4,6 +4,7 @@ import { Send } from "lucide-react"
 import { sendMessageThunk } from "../features/chat/chatSlice"
 import { socket } from "../socket"
 import { Image, X } from "lucide-react"
+import { errorToast } from "../utils/notification"
 
 const MessageInput = () => {
 
@@ -60,6 +61,10 @@ const MessageInput = () => {
     const handleChange = (e) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0]
+            if (!((file.type).startsWith("image/"))) {
+                errorToast("please select an image")
+                return
+            }
             setSelectedFile(file)
         }
     }
@@ -82,11 +87,11 @@ const MessageInput = () => {
     }, [])
 
     return (
-        <>
+        <div>
             {
                 previewUrl && (
-                    <div className="bg-[var(--color-bg-glass)] w-full p-2 flex justify-center">
-                        <div className="relative w-[10vw] max-w-[200px] aspect-square rounded-[1vmax] overflow-hidden">
+                    <div className="bg-[var(--color-bg-glass)] w-full p-2 flex justify-start">
+                        <div className="relative w-[clamp(80px,10vw,150px)] aspect-square rounded-[1vmax] overflow-hidden">
                             <button
                                 onClick={() => {
                                     setPreviewUrl(null)
@@ -148,7 +153,7 @@ const MessageInput = () => {
                     </button>
                 </div>
             </form>
-        </>
+        </div>
     )
 }
 

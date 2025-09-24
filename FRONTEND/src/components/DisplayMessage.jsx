@@ -16,7 +16,7 @@ const DisplayMessage = () => {
     }, [messages])
 
     return (
-        <div className="minimalist-scrollbar bg-[var(--color-b  g-base)] text-[var(--color-text-primary)] h-screen overflow-y-scroll px-4">
+        <div className="minimalist-scrollbar bg-[var(--color-bg-base)] text-[var(--color-text-primary)] h-screen overflow-y-scroll px-4">
             <ul className="space-y-8 p-2 sm:p-3">
                 {
                     messages.map((msg, index) => {
@@ -33,7 +33,7 @@ const DisplayMessage = () => {
                                         {
                                             msg.image && (
                                                 <div
-                                                    className="w-[60vw] sm:w-[40vw] md:w-[25vw] lg:w-[15vw] 
+                                                    className="w-[60vw] pb-1 sm:w-[40vw] md:w-[25vw] lg:w-[15vw] 
                                                     max-w-[300px] overflow-hidden rounded-xl"
                                                 >
                                                     <img
@@ -44,7 +44,6 @@ const DisplayMessage = () => {
                                                 </div>
                                             )
                                         }
-
                                         <p className="">{text} </p>
                                     </div>
                                 </div>

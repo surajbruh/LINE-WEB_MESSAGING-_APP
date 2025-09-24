@@ -40,7 +40,7 @@ const ActiveChat = () => {
     }, [activeChat])
 
     return (
-        <div className="flex items-center gap-2 px-4 py-2 bg-[var(--color-active-bg)] text-[var(--color-text-primary)] ">
+        <div className="flex items-center gap-2 px-4 py-2 bg-[var(--color-bg-surface)] text-[var(--color-text-primary)] ">
             <button
                 onClick={() => {
                     setShow(!show)

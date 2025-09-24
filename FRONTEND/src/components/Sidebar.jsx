@@ -5,7 +5,7 @@ import {
 } from "../features/chat/chatSlice"
 import { useDispatch, useSelector } from "react-redux"
 import Chat from "./Chat"
-import SearchBar from "./Searchbar"
+import SearchBar from "./SearchBar"
 import { useShowContext } from "../utils/showContext"
 import { useHeightContext } from "../utils/heightContext"
 import { errorToast } from "../utils/notification"
