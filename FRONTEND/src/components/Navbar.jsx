@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react"
-import { Menu, X } from "lucide-react" // icons
+import { Menu, X } from "lucide-react"
 import { logoutThunk } from "../features/auth/authSlice"
 import { successToast, errorToast } from "../utils/notification"
 import ThemeToggle from "./ThemeToggle"
@@ -22,7 +22,7 @@ const Navbar = () => {
 
         if (logoutThunk.fulfilled.match(result)) {
             successToast("Logged out successfully");
-            navigate('/login')
+            navigate('/')
         } else {
             errorToast(result.payload || "Logout failed");
         }
@@ -33,8 +33,8 @@ const Navbar = () => {
             {/* Logo */}
             <h1 className="uppercase font-bold text-2xl">
                 <Link
-                    // disabled={isLoading.checkAuth}
-                    to={"/"}>LINE</Link>
+                    disabled={isLoading.checkAuth}
+                    to={authUser ? "/home" : "/"}>LINE</Link>
             </h1>
 
             <ul className="flex items-center">

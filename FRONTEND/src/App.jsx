@@ -11,14 +11,13 @@ import { useDispatch, useSelector } from "react-redux"
 import { setOnlineUsers } from "./features/auth/authSlice"
 import { socket } from "./socket"
 import { addMessage } from "./features/chat/chatSlice"
-import TestComponent from "./components/Test"
 import heightContext from "./utils/heightContext"
 import { getElementHeight } from "./utils/script"
+import LandingPage from "./pages/landingPage"
 
 const App = () => {
 
-  const { authUser, onlineUsers } = useSelector(state => state.auth)
-  const { messages } = useSelector(state => state.chatStore)
+  const { authUser } = useSelector(state => state.auth)
   const dispatch = useDispatch()
 
   const [navHeight, setNavHeight] = useState(null)
@@ -39,11 +38,6 @@ const App = () => {
       socket.off("newMessage")
     }
   }, [authUser, dispatch])
-
-  //onlineUsers
-  useEffect(() => {
-    console.log(onlineUsers)
-  }, [onlineUsers])
 
   //TODO: IMPROVE THIS FUNCTON 
   useEffect(() => {
@@ -68,7 +62,8 @@ const App = () => {
           />
           <Navbar />
           < Routes >
-            <Route index element={
+            <Route index element={<LandingPage />} />
+            <Route path="/home" element={
               <PrivateRoute>
                 <HomePage />
               </PrivateRoute>
@@ -80,7 +75,6 @@ const App = () => {
                 <ProfilePage />
               </PrivateRoute>
             } />
-            <Route path="/" element={<TestComponent />} />
           </Routes >
         </heightContext.Provider>
       </div>

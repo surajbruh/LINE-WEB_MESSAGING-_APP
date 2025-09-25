@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginThunk } from "../features/auth/authSlice";
 import { successToast, errorToast } from "../utils/notification";
 import { UserRound, Key, Eye, EyeClosed } from "lucide-react";
-import Navbar from "../components/Navbar";
 import { useHeightContext } from "../utils/heightContext";
 
 const LoginPage = () => {
@@ -16,7 +15,6 @@ const LoginPage = () => {
     const { isLoading } = useSelector(state => state.auth)
     const isLoggingIn = isLoading.login
 
-    const { authUser } = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
     const navigate = useNavigate()
@@ -27,14 +25,13 @@ const LoginPage = () => {
 
         if (loginThunk.fulfilled.match(result)) {
             successToast("Logged in successfully");
-            navigate('/')
+            navigate('/home')
         } else {
             errorToast(result.payload || "Login failed");
         }
     };
 
     const navHeight = useHeightContext()
-    console.log(navHeight)
 
     return (
         <>
