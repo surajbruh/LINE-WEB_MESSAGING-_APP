@@ -1,6 +1,7 @@
 import { userModel } from "../models/user.model.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import { cookieOptions } from "../utils/utils.js"
 
 export const register = async (req, res) => {
     const { username, email, password } = req.body
@@ -39,13 +40,6 @@ export const register = async (req, res) => {
             message: "Something went wrong"
         });
     }
-}
-
-const cookieOptions = {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    maxAge: 60 * 60 * 1000
 }
 
 export const login = async (req, res) => {
