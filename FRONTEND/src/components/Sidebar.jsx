@@ -9,6 +9,7 @@ import SearchBar from "./SearchBar"
 import { useShowContext } from "../utils/showContext"
 import { useHeightContext } from "../utils/heightContext"
 import { errorToast } from "../utils/notification"
+import ChatSkeleton from "./skeleton/ChatSkeleton"
 
 const Sidebar = () => {
 
@@ -71,7 +72,14 @@ const Sidebar = () => {
                 <SearchBar handleChange={handleChange} />
                 {
                     isLoading.conversations ?
-                        <h1>loading...</h1>
+                        // {chat skeleton loader}
+                        [...Array(6)].map((_, i) => {
+                            return (
+                                <li key={i}>
+                                    <ChatSkeleton />
+                                </li>
+                            )
+                        })
                         :
                         (filteredUsers.length > 0) ?
                             filteredUsers.map((user) => {

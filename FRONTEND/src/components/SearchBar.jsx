@@ -18,8 +18,8 @@ export default function SearchBar({ handleChange }) {
                     <input
                         type="text"
                         onChange={handleChange}
-                        placeholder="Search..."
-                        className="w-full pl-10 pr-4 py-2 rounded-2xl border border-[var(--color-secondary-border)] outline-none bg-[var(--color-bg-surface)] shadow-sm text-sm md:text-base"
+                        placeholder="Search"
+                        className="placeholder:italic w-full pl-10 pr-4 py-2 rounded-2xl border border-[var(--color-secondary-border)] outline-none bg-[var(--color-bg-surface)] shadow-sm text-sm md:text-base"
                     />
                 </div>
             </form>

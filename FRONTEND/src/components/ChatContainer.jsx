@@ -22,10 +22,10 @@ export default function ChatContainer() {
                 <div className="text-center p-6 max-w-md">
                     <MessageSquare className="mx-auto h-16 w-16 mb-4" />
                     <h2 className="text-2xl font-semibold">
-                        Welcome to Chat
+                        Welcome to Line
                     </h2>
                     <p className="mt-2">
-                        Select a conversation from the sidebar to start messaging, or create a new chat to begin.
+                        Select a conversation from the sidebar to start messaging, or search a user.
                     </p>
                 </div>
             </div>

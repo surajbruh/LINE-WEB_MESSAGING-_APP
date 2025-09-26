@@ -48,9 +48,6 @@ const Navbar = () => {
                                     <Link to="/profile">Profile</Link>
                                 </li>
                                 <li>
-                                    <Link to="">Settings</Link>
-                                </li>
-                                <li>
                                     <button
                                         disabled={isLoading.logout}
                                         onClick={handleLogout}
@@ -90,9 +87,6 @@ const Navbar = () => {
                                         <>
                                             <li>
                                                 <Link to="/profile" onClick={() => setIsOpen(false)}>Profile</Link>
-                                            </li>
-                                            <li>
-                                                <Link to="" onClick={() => setIsOpen(false)}>Settings</Link>
                                             </li>
                                             <li className="w-full">
                                                 <button
